@@ -73,3 +73,24 @@ def test_output_is_sorted():
             seen = True
 
     assert seen
+
+
+def test_do_not_choke_on_blank_lines():
+    srt = HistorySorter()
+    srt.add_stream([": 1474929672:0; one \\\n",
+                    "\n",
+                    ": 1474929674:0; bill\n",
+                    ": 1474929671:0; bob\n", ])
+
+    seen = False
+
+    for n, l in enumerate(srt.get_output()):
+        if n == 0:
+            assert l == ": 1474929671:0; bob\n"
+        if n == 1:
+            assert l == ": 1474929672:0; one \\\n\n"
+        if n == 2:
+            assert l == ": 1474929674:0; bill\n"
+            seen = True
+
+    assert seen
