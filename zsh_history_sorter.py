@@ -12,8 +12,14 @@ class HistorySorter(object):
             acc = ""
             for l in s:
                 acc += l
-                if l[-2] == '\\':
-                    continue
+                print(l)
+                try:
+                    if l[-2] == '\\':
+                        continue
+                except IndexError as e:
+                    print ("Index error on: '{}'".format(l))
+                    raise e
+
                 yield acc
                 acc = ""
 
