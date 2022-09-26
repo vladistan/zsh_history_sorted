@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from sys import stdin, argv
+from sys import stdin, stdout, argv
 
 
 class HistorySorter(object):
@@ -9,7 +9,7 @@ class HistorySorter(object):
     def get_lines(self):
 
         for s in self.streams:
-            acc = ""
+            acc = b""
             for l in s:
                 acc += l
 
@@ -21,7 +21,7 @@ class HistorySorter(object):
                     raise e
 
                 yield acc
-                acc = ""
+                acc = b""
 
     def get_output(self):
         lines = [l for l in self.get_lines()]
@@ -33,7 +33,7 @@ class HistorySorter(object):
 
 def get_file():
     if len(argv) > 1:
-        return open(argv[1])
+        return open(argv[1], "rb")
     else:
         return stdin
 
@@ -44,4 +44,4 @@ if __name__ == "__main__":
     srt.add_stream(get_file())
 
     for l in srt.get_output():
-        print(l[:-1])
+        stdout.buffer.write(l)
