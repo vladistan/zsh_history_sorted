@@ -8,20 +8,32 @@ class HistorySorter(object):
 
     def get_lines(self):
 
+        lno = 0
+        prev_line = ""
+
         for s in self.streams:
             acc = ""
-            for l in s:
-                acc += l
+            try:
+                for l in s:
 
-                try:
-                    if len(l) > 1 and l[-2] == '\\':
-                        continue
-                except IndexError as e:
-                    print("Index error on: '{}'".format(l))
-                    raise e
+                    lno += 1
+                    acc += l
+                    prev_line = l
 
-                yield acc
-                acc = ""
+                    try:
+                        if len(l) > 1 and l[-2] == '\\':
+                            continue
+
+                        yield acc
+                        acc = ""
+
+                    except IndexError as e:
+                        print("Index error on: '{}'".format(l))
+                        raise e
+
+            except UnicodeDecodeError as e:
+                print("Decode error: {}: {}", lno, prev_line, e)
+                raise e
 
     def get_output(self):
         lines = [l for l in self.get_lines()]
