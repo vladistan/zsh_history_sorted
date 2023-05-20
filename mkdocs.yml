@@ -1,0 +1,78 @@
+# Set strict to true to turn warnings into errors to catch warnings within CI.
+strict: true
+theme:
+  name: material
+  # By default, fonts are pulled from Google on the Internet. To support offline usage, this is
+  # disabled.
+  font: false
+  palette:
+    scheme: slate
+    primary: green
+    accent: yellow
+  icon:
+    # GitHub specific.
+    repo: fontawesome/brands/github
+  favicon: static/history-sorter.png
+  features:
+  - content.code.annotate
+  - content.code.copy
+  - content.tabs.link
+  - navigation.expand
+  - navigation.instant
+  - navigation.footer
+  - navigation.top
+  - navigation.tracking
+  - search.highlight
+  - search.share
+  - search.suggest
+  - toc.follow
+markdown_extensions:
+- admonition
+- footnotes
+- pymdownx.details
+- pymdownx.keys
+- pymdownx.highlight
+- pymdownx.superfences
+- pymdownx.snippets
+- pymdownx.tabbed:
+    alternate_style: true
+- md_in_html
+extra_css:
+- static/stylesheets/extra.css
+extra:
+  social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/vladistan/zsh_history_sorted
+plugins:
+- search
+- offline:
+    enabled: false
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_if_no_docstring: true
+          show_signature_annotations: true
+  # Autodoc configuration.
+  # https://mkdocstrings.github.io/recipes/#automatic-code-reference-pages
+- gen-files:
+    scripts:
+    - docs/gen_ref_pages.py
+- literate-nav:
+    nav_file: SUMMARY.md
+  # This plugin is used to validate URLs (including anchors).
+- htmlproofer:
+    validate_external_urls: false
+    raise_error: true
+watch:
+  # Watch src/ directory to reload on changes to docstrings for mkdocstrings plugin.
+- src
+site_name: zsh-history-sorted
+copyright: Copyright &copy; 2018-2023 Vlad Korolev
+# GitHub Specific Configuration.
+repo_name: conn-craze
+repo_url: https://github.com/vladistan/zsh_history_sorted
+edit_uri: edit/master/docs/user_guide/docs/
+nav:
+- index.md
+- Code Reference: reference/
